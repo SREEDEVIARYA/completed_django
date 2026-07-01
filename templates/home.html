@@ -3,147 +3,438 @@
 
 <style>
     body {
-        background: linear-gradient(135deg, #0d6efd, #6610f2);
-        min-height: 100vh;
+        background: #eef2f7;
+        font-family: "Segoe UI", sans-serif;
     }
 
+    /* HERO SECTION */
     .hero-section {
-        padding: 80px 20px;
-    }
-
-    .hero-card {
-        border-radius: 22px;
-        overflow: hidden;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(8px);
-    }
-
-    .hero-header {
-        background: linear-gradient(135deg, #0d6efd, #6610f2);
+        background: linear-gradient(135deg, #0a1628, #102b46);
         color: white;
-        padding: 40px;
-        text-align: center;
+        padding: 100px 0;
+        border-radius: 0 0 60px 60px;
+        position: relative;
+        overflow: hidden;
     }
 
-    .hero-body {
-        padding: 50px;
+    .hero-section::before {
+        content: "";
+        position: absolute;
+        top: -160px;
+        right: -180px;
+        width: 420px;
+        height: 420px;
+        background: rgba(0, 195, 137, 0.18);
+        border-radius: 50%;
+        filter: blur(80px);
     }
 
+    .hero-section::after {
+        content: "";
+        position: absolute;
+        bottom: -180px;
+        left: -180px;
+        width: 420px;
+        height: 420px;
+        background: rgba(13, 110, 253, 0.18);
+        border-radius: 50%;
+        filter: blur(90px);
+    }
+
+    .hero-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.12);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        margin-bottom: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .hero-title {
+        font-size: 52px;
+        font-weight: 900;
+        line-height: 1.15;
+        letter-spacing: 0.5px;
+    }
+
+    .hero-subtitle {
+        font-size: 17px;
+        opacity: 0.88;
+        line-height: 1.9;
+        max-width: 650px;
+    }
+
+    /* HERO BUTTONS */
+    .hero-btn {
+    width: 220px;          /* Same width for all buttons */
+    height: 52px;          /* Same height */
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+    text-decoration: none;
+}
+
+    .btn-login {
+        background: #00c389;
+        border: none;
+        color: white;
+    }
+
+    .btn-login:hover {
+        background: #00a874;
+        transform: translateY(-2px);
+        color: white;
+    }
+
+    .btn-register {
+        border: 2px solid rgba(255, 255, 255, 0.6);
+        color: white;
+        background: transparent;
+    }
+
+    .btn-register:hover {
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateY(-2px);
+        color: white;
+    }
+
+    .btn-student {
+        background: #ffc107;
+        border: none;
+        color: black;
+    }
+
+    .btn-student:hover {
+        background: #e0a800;
+        transform: translateY(-2px);
+        color: black;
+    }
+
+    /* HERO IMAGE */
+    .hero-image {
+        width: 100%;
+        max-width: 420px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.07);
+        padding: 28px;
+        box-shadow: 0px 14px 40px rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    /* SECTION HEADINGS */
+    .section-title {
+        font-weight: 900;
+        font-size: 32px;
+        color: #0a1628;
+    }
+
+    .section-subtitle {
+        color: #5b6b7c;
+        font-size: 16px;
+        max-width: 720px;
+        margin: auto;
+        line-height: 1.8;
+    }
+
+    /* FEATURE CARDS */
     .feature-card {
         border-radius: 18px;
-        transition: 0.3s;
         border: none;
+        transition: 0.35s;
+        background: #f8fafc;
+        box-shadow: 0px 10px 22px rgba(0, 0, 0, 0.07);
+        padding: 28px;
     }
 
     .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
+        transform: translateY(-10px);
+        box-shadow: 0px 18px 40px rgba(0, 0, 0, 0.12);
     }
 
-    .icon-box {
-        width: 50px;
-        height: 50px;
-        border-radius: 14px;
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
         display: flex;
-        align-items: center;
         justify-content: center;
-        font-size: 22px;
+        align-items: center;
+        font-size: 26px;
         font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .icon-navy {
+        background: #0a1628;
         color: white;
-        margin-bottom: 12px;
+    }
+
+    .icon-teal {
+        background: #00c389;
+        color: white;
+    }
+
+    .icon-orange {
+        background: #ff9800;
+        color: white;
+    }
+
+    .icon-red {
+        background: #e53935;
+        color: white;
+    }
+
+    /* ABOUT SECTION */
+    .about-section {
+        background: #f8fafc;
+        border-radius: 25px;
+        padding: 70px 45px;
+        box-shadow: 0px 14px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    .about-title {
+        font-weight: 900;
+        color: #0a1628;
+        font-size: 34px;
+    }
+
+    /* FOOTER */
+    .footer-section {
+        background: #0a1628;
+        color: rgba(255, 255, 255, 0.75);
+        padding: 40px 0;
+        margin-top: 70px;
+    }
+
+    .footer-section h6 {
+        font-weight: 800;
+        color: white;
+    }
+
+    .footer-section a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .footer-section a:hover {
+        color: #00c389;
+    }
+
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        margin-top: 20px;
+        padding-top: 15px;
+        font-size: 13px;
     }
 </style>
 
-<div class="container hero-section">
 
-    <!-- MAIN CARD -->
-    <div class="card shadow-lg hero-card">
+<!-- HERO SECTION -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
 
-        <!-- HEADER -->
-        <div class="hero-header">
-            <h1 class="fw-bold display-6 mb-2">Staff Excel Sheet Management</h1>
-            <p class="mb-0 fs-5">
-                A secure platform for consultants and admins to manage excel sheets efficiently.
+            <!-- LEFT -->
+            <div class="col-md-7 text-center text-md-start">
+
+                <span class="hero-badge">
+                    🚀 Technovalley Software India Pvt Ltd - Internal System
+                </span>
+
+                <h1 class="hero-title mb-3">
+                    Staff Excel Sheet <br> Management System
+                </h1>
+
+                <p class="hero-subtitle mb-4">
+                    A secure and modern platform for managing student details, attendance tracking,
+                    and completed batch reports. Designed to improve internal operations with
+                    professional workflow automation.
+                </p>
+<!-- BUTTONS -->
+<div class="d-flex flex-column flex-md-row gap-3 justify-content-center justify-content-md-end flex-wrap">
+
+    <!-- Explore -->
+    <a href="{% url 'login' %}" class="btn btn-login hero-btn">
+        🔑 Explore
+    </a>
+
+    <!-- Staff Register -->
+    <a href="{% url 'register_admin' %}" class="btn btn-register hero-btn">
+        📝 Staff Register (Admin)
+    </a>
+
+    <!-- Student Login -->
+    <a href="{% url 'student_login' %}" class="btn btn-warning hero-btn">
+        🎓 Student Login
+    </a>
+
+    <!-- Staff Login -->
+    <a href="{% url 'login' %}" class="btn btn-primary hero-btn">
+        👨‍💼 Staff Login
+    </a>
+
+</div>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="col-md-5 text-center mt-4 mt-md-0">
+                <div class="hero-image">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2920/2920349.png"
+                         class="img-fluid"
+                         alt="Excel Management">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- FEATURES SECTION -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <h2 class="section-title">Key Features</h2>
+            <p class="section-subtitle mt-2">
+                Built to simplify internal consultant operations with powerful automation, secure access, and professional dashboards.
             </p>
         </div>
 
-        <!-- BODY -->
-        <div class="hero-body">
+        <div class="row g-4">
 
-            <!-- BUTTONS -->
-            <div class="text-center mb-5">
-                <a href="{% url 'login' %}" class="btn btn-success btn-lg px-5 fw-bold shadow-sm me-2">
-                    Login
-                </a>
-                <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg px-5 fw-bold shadow-sm">
-                    Register
-                </a>
+            <div class="col-md-6 col-lg-3">
+                <div class="card feature-card h-100">
+                    <div class="feature-icon icon-navy">📌</div>
+                    <h6 class="fw-bold">Student Sheet</h6>
+                    <p class="text-muted small mb-0">
+                        Manage student details including batch code, course, fee pending, module and progress tracking.
+                    </p>
+                </div>
             </div>
 
-            <!-- FEATURES -->
-            <div class="row g-4">
-
-                <div class="col-md-6 col-lg-3">
-                    <div class="card shadow-sm feature-card p-4 h-100">
-                        <div class="icon-box bg-success">✔</div>
-                        <h6 class="fw-bold">Excel Like Sheets</h6>
-                        <p class="text-muted small mb-0">
-                            Create and edit sheets in an excel-style interface.
-                        </p>
-                    </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card feature-card h-100">
+                    <div class="feature-icon icon-teal">📅</div>
+                    <h6 class="fw-bold">Attendance Tracking</h6>
+                    <p class="text-muted small mb-0">
+                        Maintain monthly attendance records with 31-day tracking and quick save functionality.
+                    </p>
                 </div>
-
-                <div class="col-md-6 col-lg-3">
-                    <div class="card shadow-sm feature-card p-4 h-100">
-                        <div class="icon-box bg-primary">🔒</div>
-                        <h6 class="fw-bold">Secure Login</h6>
-                        <p class="text-muted small mb-0">
-                            Role based access for consultants and admin.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3">
-                    <div class="card shadow-sm feature-card p-4 h-100">
-                        <div class="icon-box bg-warning text-dark">📄</div>
-                        <h6 class="fw-bold">Multiple Sheets</h6>
-                        <p class="text-muted small mb-0">
-                            Consultants can create multiple sheets anytime.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3">
-                    <div class="card shadow-sm feature-card p-4 h-100">
-                        <div class="icon-box bg-danger">📊</div>
-                        <h6 class="fw-bold">Admin Dashboard</h6>
-                        <p class="text-muted small mb-0">
-                            Admin can view all consultant updates in one panel.
-                        </p>
-                    </div>
-                </div>
-
             </div>
 
-            <!-- ABOUT SECTION -->
-            <div class="mt-5 text-center">
-                <h5 class="fw-bold text-dark">Built for Professional Staff Management</h5>
-                <p class="text-muted mt-2 mb-0">
-                    This system helps Technovalley Software manage consultant excel work securely and efficiently
-                    with a modern interface.
-                </p>
+            <div class="col-md-6 col-lg-3">
+                <div class="card feature-card h-100">
+                    <div class="feature-icon icon-orange">✅</div>
+                    <h6 class="fw-bold">Completed Batch</h6>
+                    <p class="text-muted small mb-0">
+                        Automatically transfer student details to completed batch sheet once progress reaches 100%.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card feature-card h-100">
+                    <div class="feature-icon icon-red">🛡</div>
+                    <h6 class="fw-bold">Admin Dashboard</h6>
+                    <p class="text-muted small mb-0">
+                        Admin can monitor all consultant sheets, export data, manage reports and system records.
+                    </p>
+                </div>
             </div>
 
         </div>
-    </div>
 
-    <!-- FOOTER -->
-    <div class="text-center mt-4">
-        <p class="text-white small mb-0">
-            © 2026 Technovalley Software | Staff Excel Management System
-        </p>
     </div>
+</section>
 
-</div>
+
+<!-- ABOUT SECTION -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="about-section">
+            <div class="row align-items-center">
+
+                <div class="col-md-7">
+                    <h2 class="about-title mb-3">
+                        Built for Technovalley Staff Operations
+                    </h2>
+
+                    <p class="text-muted" style="font-size: 16px; line-height: 1.9;">
+                        This platform reduces manual excel file handling and ensures secure tracking of
+                        student progress, consultant updates, and attendance records.
+                        It provides an enterprise-level interface for internal workflow automation.
+                    </p>
+
+                    <ul class="text-muted" style="line-height: 2;">
+                        <li>Secure Staff Authentication</li>
+                        <li>Separate Student Login & Registration</li>
+                        <li>Role Based Access (Admin / Consultant / Student)</li>
+                        <li>Excel-like Sheet Interface</li>
+                        <li>Export Reports as Excel Files</li>
+                    </ul>
+                </div>
+
+                <div class="col-md-5 text-center mt-4 mt-md-0">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712100.png"
+                         class="img-fluid"
+                         style="max-width: 340px;">
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="footer-section">
+    <div class="container">
+
+        <div class="row text-center text-md-start">
+
+            <div class="col-md-6 mb-3">
+                <h6>Technovalley Software India Pvt Ltd</h6>
+                <p class="small mt-2">
+                    A professional internal staff system for managing student sheets and attendance operations.
+                </p>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <h6>Quick Links</h6>
+                <div class="d-flex flex-column gap-1 mt-2">
+                    <a href="{% url 'login' %}">Staff Login</a>
+                    <a href="{% url 'register' %}">Staff Register</a>
+                    <a href="{% url 'student_login' %}">Student Login</a>
+                    <a href="{% url 'student_register' %}">Student Register</a>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <h6>Support</h6>
+                <div class="d-flex flex-column gap-1 mt-2">
+                    <a href="#">Contact Admin</a>
+                    <a href="#">Help Center</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom text-center">
+            © 2026 Technovalley Software India Pvt Ltd | All Rights Reserved
+        </div>
+
+    </div>
+</footer>
 
 {% endblock %}

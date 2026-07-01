@@ -2,92 +2,255 @@
 {% block content %}
 
 <style>
-    body{
-        background: linear-gradient(135deg, #0d6efd, #6610f2);
+    body {
+        background: #f4f6f9;
         min-height: 100vh;
+        font-family: "Segoe UI", sans-serif;
     }
 
-    .login-card{
-        border-radius: 20px;
-        overflow: hidden;
-    }
-
-    .login-header{
-        background: linear-gradient(135deg, #198754, #0d6efd);
-        color: white;
+    /* MAIN WRAPPER */
+    .login-page {
+        min-height: 92vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         padding: 25px;
-        text-align: center;
     }
 
-    .login-body{
-        padding: 35px;
+    /* CARD */
+    .login-container {
+        max-width: 1000px;
+        width: 100%;
+        border-radius: 22px;
+        overflow: hidden;
+        border: none;
+        box-shadow: 0px 20px 60px rgba(0, 0, 0, 0.18);
         background: white;
     }
 
-    .form-control{
-        border-radius: 12px;
-        padding: 12px;
+    /* LEFT SECTION */
+    .left-panel {
+        background: linear-gradient(160deg, #111827, #1f2937);
+        color: white;
+        padding: 55px 45px;
+        position: relative;
     }
 
-    .btn-login{
-        border-radius: 12px;
+    .left-panel h2 {
+        font-weight: 900;
+        font-size: 30px;
+        line-height: 1.3;
+    }
+
+    .left-panel p {
+        font-size: 14px;
+        opacity: 0.85;
+        line-height: 1.8;
+        margin-top: 15px;
+    }
+
+    .company-badge {
+        display: inline-block;
+        padding: 7px 16px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 600;
+        background: rgba(255, 215, 0, 0.15);
+        border: 1px solid rgba(255, 215, 0, 0.25);
+        color: #ffd700;
+        margin-bottom: 18px;
+    }
+
+    .highlight-box {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 18px;
+        margin-top: 30px;
+        border: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .highlight-box ul {
+        padding-left: 18px;
+        margin: 0;
+        font-size: 13px;
+        opacity: 0.9;
+    }
+
+    .highlight-box li {
+        margin-bottom: 10px;
+    }
+
+    /* RIGHT SECTION */
+    .right-panel {
+        padding: 60px 55px;
+        background: #ffffff;
+    }
+
+    .login-title {
+        font-size: 28px;
+        font-weight: 900;
+        color: #111827;
+    }
+
+    .login-subtitle {
+        font-size: 14px;
+        color: #6b7280;
+        margin-top: 5px;
+        margin-bottom: 30px;
+    }
+
+    /* INPUT */
+    .form-control {
+        border-radius: 14px;
+        padding: 12px 14px;
+        font-size: 15px;
+        border: 1px solid #d1d5db;
+        transition: 0.2s;
+    }
+
+    .form-control:focus {
+        border-color: #f59e0b;
+        box-shadow: 0px 0px 0px 4px rgba(245, 158, 11, 0.25);
+    }
+
+    /* BUTTON */
+    .btn-login {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        border: none;
+        border-radius: 14px;
         padding: 12px;
+        font-weight: 800;
         font-size: 16px;
+        color: white;
+        transition: 0.3s;
+    }
+
+    .btn-login:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(135deg, #d97706, #b45309);
+        box-shadow: 0px 10px 25px rgba(245, 158, 11, 0.35);
+    }
+
+    .register-link a {
+        color: #d97706;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .register-link a:hover {
+        text-decoration: underline;
+    }
+
+    /* FOOTER */
+    .page-footer {
+        text-align: center;
+        font-size: 13px;
+        color: #6b7280;
+        margin-top: 20px;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width: 768px) {
+        .left-panel {
+            text-align: center;
+            padding: 40px 25px;
+        }
+
+        .right-panel {
+            padding: 40px 25px;
+        }
+
+        .highlight-box {
+            text-align: left;
+        }
     }
 </style>
 
-<div class="container mt-5">
 
-    <div class="row justify-content-center align-items-center" style="min-height: 80vh;">
-        <div class="col-md-6 col-lg-5">
+<div class="container login-page">
 
-            <div class="card shadow-lg border-0 login-card">
+    <div class="row justify-content-center w-100">
+        <div class="col-lg-11 col-xl-10">
 
-                <!-- HEADER -->
-                <div class="login-header">
-                    <h3 class="fw-bold mb-1">Welcome Back</h3>
-                    <p class="mb-0">Login to continue</p>
-                </div>
+            <div class="login-container">
+                <div class="row g-0">
 
-                <!-- BODY -->
-                <div class="login-body">
+                    <!-- LEFT PANEL -->
+                    <div class="col-md-5 left-panel d-flex flex-column justify-content-center">
 
-                    <form method="POST">
-                        {% csrf_token %}
+                        <span class="company-badge">
+                            Technovalley Secure Portal
+                        </span>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold text-dark">Employee ID</label>
-                            <input type="text" name="emp_id" class="form-control"
-                                   placeholder="Enter your Employee ID" required>
+                        <h2>
+                            Staff Excel Sheet <br> Management System
+                        </h2>
+
+                        <p>
+                            A professional platform for managing Student Details, Attendance Records,
+                            and Completed Batch Reports. Designed for internal staff workflow automation.
+                        </p>
+
+                        <div class="highlight-box">
+                            <h6 class="fw-bold text-warning mb-3">System Benefits</h6>
+                            <ul>
+                                <li>Secure Consultant Login</li>
+                                <li>Excel Style Sheet Interface</li>
+                                <li>Attendance Monthly Tracking</li>
+                                <li>Admin Monitoring & Export</li>
+                            </ul>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold text-dark">Password</label>
-                            <input type="password" name="password" class="form-control"
-                                   placeholder="Enter your Password" required>
-                        </div>
+                        <p class="mt-4 mb-0" style="opacity:0.7; font-size:13px;">
+                            © 2026 Technovalley Software India Pvt Ltd
+                        </p>
 
-                        <button class="btn btn-success w-100 fw-bold btn-login shadow-sm">
-                            Login
-                        </button>
+                    </div>
 
-                        <div class="text-center mt-4">
-                            <p class="text-muted mb-0">
-                                Don't have an account?
-                                <a href="{% url 'register' %}" class="fw-bold text-primary text-decoration-none">
-                                    Register
-                                </a>
-                            </p>
-                        </div>
+                    <!-- RIGHT PANEL -->
+                    <div class="col-md-7 right-panel">
 
-                    </form>
+                        <h3 class="login-title">Sign In</h3>
+                        <p class="login-subtitle">
+                            Login using your Employee ID to access the system
+                        </p>
+
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                               <label class="form-label fw-bold text-dark">Company Email</label>
+                                <input type="email" name="email" class="form-control"
+       placeholder="Enter Company Email" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold text-dark">Password</label>
+                                <input type="password" name="password" class="form-control"
+                                       placeholder="Enter Password" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-login w-100">
+                                Login to Dashboard
+                            </button>
+
+                            <div class="text-center mt-4 register-link">
+                                <p class="text-muted mb-0">
+                                    Don’t have an account?
+                                    <a href="{% url 'register' %}">Create Account</a>
+                                </p>
+                            </div>
+
+                        </form>
+
+                    </div>
 
                 </div>
             </div>
 
-            <p class="text-center text-white mt-4 small">
-                © 2026 Technovalley Software | Staff Excel Management System
-            </p>
+            <div class="page-footer">
+                Secure Access | Staff Excel Sheet Management System | Technovalley Software
+            </div>
 
         </div>
     </div>

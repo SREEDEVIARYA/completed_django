@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="text-primary fw-bold">Welcome Student</h2>
+            <p class="text-muted mb-0">Student ID: <b>{{ request.user.emp_id }}</b></p>
+        </div>
+        
+
+        <div class="d-flex gap-2">
+            <a href="{% url 'student_feedback' %}" class="btn btn-success fw-bold">
+                📝 Feedback Form
+            </a>
+            <a href="{% url 'student_change_password' %}"
+   class="btn btn-warning">
+    Change Password
+</a>
+
+            <a href="{% url 'logout' %}" class="btn btn-danger fw-bold">
+                Logout
+            </a>
+        </div>
+    </div>
+
+
+    <!-- MESSAGES -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-warning fw-bold">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+    <!-- ============================= -->
+    <!-- COURSE DETAILS FORM -->
+    <!-- ============================= -->
+    <div class="card shadow border-0 rounded-4 mb-4">
+        <div class="card-header bg-dark text-white fw-bold">
+            📘 Course Details
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="row">
+
+                    <div class="col-md-8 mb-3">
+                        <label class="fw-bold">Confirm Your Email ID</label>
+                        <input type="email"
+                               name="student_email"
+                               class="form-control"
+                               placeholder="Enter Your Email ID"
+                               required>
+                    </div>
+
+                    <div class="col-md-4 mb-3 d-flex align-items-end">
+                        <button type="submit"
+                                name="view_course"
+                                class="btn btn-primary fw-bold w-100">
+                            View Course Details
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- COURSE DETAILS TABLE -->
+    <!-- ============================= -->
+    {% if student_rows %}
+    <div class="card shadow border-0 rounded-4 mb-4">
+        <div class="card-header bg-success text-white fw-bold">
+            ✅ Your Course Details
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Batch Code</th>
+                            <th>Register No</th>
+                            <th>Student Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Module</th>
+                            <th>Course</th>
+                            <th>Progress %</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for row in student_rows %}
+                        <tr>
+                            <td>{{ row.col1 }}</td>
+                            <td>{{ row.col2 }}</td>
+                            <td>{{ row.col3 }}</td>
+                            <td>{{ row.col4 }}</td>
+                            <td>{{ row.col5 }}</td>
+                            <td>{{ row.col8 }}</td>
+                            <td>{{ row.col9 }}</td>
+                            <td>{{ row.col11 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+
+    <!-- ============================= -->
+    <!-- VERIFY ATTENDANCE FORM -->
+    <!-- ============================= -->
+    <div class="card shadow border-0 rounded-4 mb-4">
+        <div class="card-header bg-primary text-white fw-bold">
+            ✅ Verify Attendance
+        </div>
+
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="row">
+
+                    <div class="col-md-5 mb-3">
+                        <label class="fw-bold">Student Name</label>
+                        <input type="text"
+                               name="student_name"
+                               class="form-control"
+                               placeholder="Enter Your Name"
+                               required>
+                    </div>
+
+                    <div class="col-md-5 mb-3">
+                        <label class="fw-bold">Batch Time</label>
+                        <input type="text"
+                               name="batch_time"
+                               class="form-control"
+                               placeholder="Enter Batch Time"
+                               required>
+                    </div>
+
+                    <div class="col-md-2 mb-3 d-flex align-items-end">
+                        <button type="submit"
+                                name="view_attendance"
+                                class="btn btn-success w-100 fw-bold">
+                            View
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+    <!-- ============================= -->
+    <!-- ATTENDANCE TABLE -->
+    <!-- ============================= -->
+    {% if attendance_rows %}
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-header bg-success text-white fw-bold">
+            📅 Attendance Details
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Batch Time</th>
+                            <th>Month</th>
+
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                            <th>6</th>
+                            <th>7</th>
+                            <th>8</th>
+                            <th>9</th>
+                            <th>10</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for row in attendance_rows %}
+                        <tr>
+                            <td>{{ row.col1 }}</td>
+                            <td>{{ row.col2 }}</td>
+                            <td>{{ row.col3 }}</td>
+
+                            <td>{{ row.col4 }}</td>
+                            <td>{{ row.col5 }}</td>
+                            <td>{{ row.col6 }}</td>
+                            <td>{{ row.col7 }}</td>
+                            <td>{{ row.col8 }}</td>
+                            <td>{{ row.col9 }}</td>
+                            <td>{{ row.col10 }}</td>
+                            <td>{{ row.col11 }}</td>
+                            <td>{{ row.col12 }}</td>
+                            <td>{{ row.col13 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

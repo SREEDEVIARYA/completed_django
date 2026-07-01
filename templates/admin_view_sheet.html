@@ -1,55 +1,197 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="container mt-4">
+<style>
+    body {
+        background: #f4f6f9;
+        font-family: "Segoe UI", sans-serif;
+    }
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    /* PAGE HEADER */
+    .page-header {
+        background: linear-gradient(135deg, #111827, #1f2937);
+        border-radius: 22px;
+        padding: 22px 28px;
+        color: white;
+        box-shadow: 0px 18px 40px rgba(0,0,0,0.18);
+    }
+
+    .page-header h3 {
+        font-weight: 900;
+        margin: 0;
+        font-size: 22px;
+    }
+
+    .page-header p {
+        margin: 0;
+        font-size: 14px;
+        opacity: 0.85;
+    }
+
+    .badge-custom {
+        padding: 8px 14px;
+        border-radius: 14px;
+        font-size: 12px;
+        font-weight: 900;
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.25);
+        color: white;
+    }
+
+    /* BUTTON */
+    .btn-back {
+        border-radius: 14px;
+        padding: 10px 18px;
+        font-weight: 900;
+        font-size: 14px;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.25);
+        color: white;
+        transition: 0.3s;
+    }
+
+    .btn-back:hover {
+        background: rgba(255,255,255,0.20);
+        color: white;
+    }
+
+    /* CARD */
+    .sheet-card {
+        border-radius: 20px;
+        border: none;
+        overflow: hidden;
+        box-shadow: 0px 12px 30px rgba(0,0,0,0.10);
+        background: white;
+    }
+
+    .sheet-card-header {
+        background: #111827;
+        color: white;
+        padding: 14px 20px;
+        font-weight: 900;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+    }
+
+    /* TABLE */
+    table th, table td {
+        text-align: center;
+        vertical-align: middle;
+        font-size: 14px;
+        padding: 12px;
+        white-space: nowrap;
+    }
+
+    thead th {
+        background: #1f2937 !important;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    tbody tr:hover {
+        background: rgba(59, 130, 246, 0.06);
+        transition: 0.2s;
+    }
+
+    .table-container {
+        max-height: 75vh;
+        overflow-y: auto;
+    }
+
+    /* EMPTY DATA */
+    .empty-box {
+        background: rgba(239, 68, 68, 0.08);
+        padding: 20px;
+        border-radius: 18px;
+        font-weight: 900;
+        color: #b91c1c;
+        border: 1px solid rgba(239, 68, 68, 0.20);
+        text-align: center;
+    }
+</style>
+
+
+<div class="container mt-4 mb-5">
+
+    <!-- HEADER -->
+    <div class="page-header mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+
         <div>
-            <h3 class="fw-bold text-primary">{{ sheet.sheet_name }}</h3>
-            <p class="text-muted mb-0">
-                Consultant: <b>{{ sheet.user.consultant_name }}</b> ({{ sheet.user.emp_id }})
+            <h3>📄 {{ sheet.sheet_name }}</h3>
+
+            <p class="mt-1">
+                Consultant: <b>{{ sheet.user.consultant_name }}</b>
+                (Employee ID: {{ sheet.user.emp_id }})
             </p>
+
+            <div class="mt-2">
+                <span class="badge-custom">
+                    Sheet Type: {{ sheet.sheet_type }}
+                </span>
+            </div>
         </div>
 
-        <a href="{% url 'admin_dashboard' %}" class="btn btn-dark fw-bold">
-            Back
-        </a>
+        <div>
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-back">
+                ⬅ Back to Dashboard
+            </a>
+        </div>
+
     </div>
 
-    <div class="card shadow border-0 p-3">
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>Column 1</th>
-                        <th>Column 2</th>
-                        <th>Column 3</th>
-                        <th>Column 4</th>
-                        <th>Column 5</th>
-                    </tr>
-                </thead>
 
-                <tbody>
-                    {% for row in rows %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ row.col1 }}</td>
-                        <td>{{ row.col2 }}</td>
-                        <td>{{ row.col3 }}</td>
-                        <td>{{ row.col4 }}</td>
-                        <td>{{ row.col5 }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="6" class="text-center text-danger fw-bold">
-                            No Data Found in this Sheet
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
+    <!-- SHEET TABLE CARD -->
+    <div class="sheet-card">
 
-            </table>
+        <div class="sheet-card-header">
+            Sheet Data Preview
+        </div>
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive table-container">
+
+                <table class="table table-bordered table-hover align-middle mb-0">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Column 1</th>
+                            <th>Column 2</th>
+                            <th>Column 3</th>
+                            <th>Column 4</th>
+                            <th>Column 5</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for row in rows %}
+                        <tr>
+                            <td class="fw-bold">{{ forloop.counter }}</td>
+                            <td>{{ row.col1 }}</td>
+                            <td>{{ row.col2 }}</td>
+                            <td>{{ row.col3 }}</td>
+                            <td>{{ row.col4 }}</td>
+                            <td>{{ row.col5 }}</td>
+                        </tr>
+
+                        {% empty %}
+                        <tr>
+                            <td colspan="6">
+                                <div class="empty-box">
+                                    ⚠ No Data Found in this Sheet
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div>
+
         </div>
     </div>
 

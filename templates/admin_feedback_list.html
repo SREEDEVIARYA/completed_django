@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="fw-bold text-primary mb-4">📋 Student Feedbacks</h2>
+
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-body">
+
+            {% if feedbacks %}
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Rating</th>
+                            <th>Recommendation</th>
+                            <th>Submitted At</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for f in feedbacks %}
+                        <tr>
+                            <td>{{ f.student.emp_id }}</td>
+                            <td>{{ f.student.student_name }}</td>
+                            <td>{{ f.student.student_email }}</td>
+                            <td>{{ f.rating }}</td>
+                            <td>{{ f.recommend_program }}</td>
+                            <td>{{ f.submitted_at }}</td>
+                        </tr>
+
+                        <tr class="bg-light">
+                            <td colspan="6">
+                                <b>Overall Experience:</b> {{ f.overall_experience }} <br>
+                                <b>Content Relevance:</b> {{ f.content_relevance }} <br>
+                                <b>Quality Materials:</b> {{ f.quality_materials }} <br>
+                                <b>Trainer Encouragement:</b> {{ f.trainer_encouragement }} <br>
+                                <b>Mode of Delivery:</b> {{ f.mode_of_delivery }} <br>
+                                <b>Started On Time:</b> {{ f.class_started_on_time }} <br>
+                                <b>Skill Enhancement:</b> {{ f.skill_enhancement }} <br>
+                                <b>Confident Apply Skills:</b> {{ f.confident_apply_skills }} <br>
+                                <b>Recording Uploaded:</b> {{ f.recording_uploaded }} <br>
+                                <b>Tools Helpful:</b> {{ f.tools_helpful }} <br>
+                                <b>Duration Sufficient:</b> {{ f.duration_sufficient }} <br>
+                                <b>Pace Program:</b> {{ f.pace_program }} <br>
+
+                                <hr>
+                                <b>Improvement Suggestion:</b> {{ f.improvement_suggestion }} <br>
+                                <b>Future Topics:</b> {{ f.future_topics }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            {% else %}
+                <div class="alert alert-warning text-center fw-bold">
+                    No Feedbacks Found
+                </div>
+            {% endif %}
+
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-dark mt-3">
+                ⬅ Back to Admin Dashboard
+            </a>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,154 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8 col-md-10">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <div class="card-header bg-primary text-white rounded-top-4 py-3">
+
+                    <h3 class="mb-0">
+                        <i class="bi bi-person-plus-fill"></i>
+                        Add Student
+                    </h3>
+
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Please correct the errors below.</strong>
+                            {{ form.errors }}
+                        </div>
+                        {% endif %}
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Student Name
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                {{ form.student_name }}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Batch Time
+                                </label>
+
+                                {{ form.batch_time }}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Email
+                                </label>
+
+                                {{ form.email }}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Phone
+                                </label>
+
+                                {{ form.phone }}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Course
+                                </label>
+
+                                {{ form.course }}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Fees Pending
+                                </label>
+
+                                {{ form.fees_pending }}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Mode of Class
+                                </label>
+
+                                {{ form.mode_of_class }}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Allocated Consultant
+                                </label>
+
+                                {{ form.allocated_consultant }}
+
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-end gap-2 flex-wrap">
+
+                            <a href="{% url 'student_list' %}"
+                               class="btn btn-outline-secondary px-4">
+
+                                <i class="bi bi-arrow-left"></i>
+                                Cancel
+
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-success px-4">
+
+                                <i class="bi bi-check-circle-fill"></i>
+                                Save Student
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

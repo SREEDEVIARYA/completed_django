@@ -1,0 +1,69 @@
+{% extends 'consultant_base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+<h3>Student Details</h3>
+</div>
+
+<div class="card-body">
+
+<table class="table table-bordered">
+
+<tr>
+<th>Name</th>
+<td>{{ student.student_name }}</td>
+</tr>
+
+<tr>
+<th>Course</th>
+<td>{{ student.course }}</td>
+</tr>
+
+<tr>
+<th>Batch</th>
+<td>{{ student.batch_time }}</td>
+</tr>
+
+<tr>
+<th>Email</th>
+<td>{{ student.email }}</td>
+</tr>
+
+<tr>
+<th>Phone</th>
+<td>{{ student.phone }}</td>
+</tr>
+
+<tr>
+<th>Fees Pending</th>
+<td>{{ student.fees_pending }}</td>
+</tr>
+
+<tr>
+<th>Mode of Class</th>
+<td>{{ student.mode_of_class }}</td>
+</tr>
+
+<tr>
+<th>Allocated Consultant</th>
+<td>{{ student.allocated_consultant.username }}</td>
+</tr>
+
+</table>
+
+<a href="{% url 'consultant_notifications' %}" class="btn btn-secondary">
+Back
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

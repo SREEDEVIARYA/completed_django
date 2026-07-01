@@ -2,228 +2,849 @@
 {% block content %}
 
 <style>
-    body {
-        background: #f5f7fb;
+/* ===========================
+   GLOBAL
+=========================== */
+
+body{
+    background:#f4f6f9;
+    font-family:"Segoe UI",sans-serif;
+    color:#333;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+
+.admin-header{
+    background:linear-gradient(135deg,#1e293b,#334155);
+    color:#fff;
+    padding:22px 28px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,.12);
+    margin-bottom:25px;
+}
+
+.admin-header h2{
+    font-size:28px;
+    font-weight:700;
+    margin-bottom:5px;
+}
+
+.admin-header p{
+    margin:0;
+    font-size:14px;
+    opacity:.9;
+}
+
+/* ===========================
+   SMALL DASHBOARD BUTTONS
+=========================== */
+
+.dashboard-btn{
+    padding:8px 14px;
+    font-size:13px;
+    font-weight:600;
+    border-radius:8px;
+    min-width:150px;
+    transition:.25s;
+}
+
+.dashboard-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 5px 12px rgba(0,0,0,.15);
+}
+
+/* ===========================
+   STATISTICS
+=========================== */
+
+.stat-card{
+    background:#fff;
+    border:none;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.stat-card:hover{
+    transform:translateY(-4px);
+}
+
+.stat-title{
+    color:#6b7280;
+    font-size:13px;
+    text-transform:uppercase;
+    font-weight:600;
+}
+
+.stat-value{
+    font-size:28px;
+    font-weight:700;
+}
+
+.stat-icon{
+    width:55px;
+    height:55px;
+    border-radius:12px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+    font-size:24px;
+}
+
+.icon-blue{background:#2563eb;}
+.icon-green{background:#16a34a;}
+.icon-red{background:#dc2626;}
+
+/* ===========================
+   CARD
+=========================== */
+
+.admin-card,
+.card{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.card-header-custom{
+    background:#1f2937;
+    color:#fff;
+    padding:16px 20px;
+    font-size:17px;
+    font-weight:700;
+}
+
+/* ===========================
+   CONSULTANT CARD
+=========================== */
+
+.consultant-card{
+    border:1px solid #e5e7eb;
+    border-radius:15px;
+    margin-bottom:20px;
+    transition:.3s;
+    overflow:hidden;
+}
+
+.consultant-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 20px rgba(0,0,0,.08);
+}
+
+.consultant-header{
+    background:#2563eb;
+    color:#fff;
+    padding:15px 20px;
+    cursor:pointer;
+}
+
+.consultant-header h5{
+    margin:0;
+    font-size:17px;
+    font-weight:600;
+}
+
+.consultant-header small{
+    opacity:.9;
+}
+
+.sheet-container{
+    display:none;
+    padding:20px;
+    background:#fff;
+}
+
+/* ===========================
+   TABLE
+=========================== */
+
+.table th{
+    background:#1f2937;
+    color:#fff;
+    text-align:center;
+}
+
+.table td{
+    vertical-align:middle;
+    text-align:center;
+}
+
+.table tbody tr:hover{
+    background:#f8fafc;
+}
+
+/* ===========================
+   SEARCH
+=========================== */
+
+.search-box,
+.filter-box{
+    border-radius:8px;
+    padding:8px 12px;
+}
+
+.search-box:focus,
+.filter-box:focus{
+    border-color:#2563eb;
+    box-shadow:none;
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+
+.btn{
+    border-radius:8px;
+    transition:.25s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-sm{
+    padding:6px 12px;
+    font-size:13px;
+    border-radius:6px;
+}
+
+.btn-view{
+    background:#198754;
+    color:#fff;
+}
+
+.btn-export{
+    background:#0d6efd;
+    color:#fff;
+}
+
+.btn-delete{
+    background:#dc3545;
+    color:#fff;
+}
+
+.btn-view:hover,
+.btn-export:hover,
+.btn-delete:hover{
+    color:#fff;
+    opacity:.9;
+}
+
+/* ===========================
+   BADGES
+=========================== */
+
+.badge,
+.badge-sheet{
+    font-size:12px;
+    padding:5px 10px;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+    .admin-header{
+        text-align:center;
     }
 
-    .admin-card {
-        border-radius: 18px;
+    .dashboard-btn{
+        width:100%;
+        margin-bottom:8px;
     }
 
-    .stat-card {
-        border-radius: 18px;
-        transition: 0.3s;
+    .consultant-header{
+        text-align:center;
     }
 
-    .stat-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0px 8px 20px rgba(0,0,0,0.12);
-    }
-
-    .search-box {
-        border-radius: 12px;
-        padding: 12px;
-    }
-
-    .filter-box {
-        border-radius: 12px;
-        padding: 12px;
-    }
+}
 </style>
 
-<div class="container mt-4">
+<div class="container mt-4 mb-5">
 
-    <!-- HEADER -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+   <!-- ===================== ADMIN HEADER ===================== -->
+
+<div class="dashboard-header shadow-sm">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+
         <div>
-            <h2 class="fw-bold text-danger mb-0">Admin Dashboard</h2>
-            <p class="text-muted mb-0">Welcome Admin, <b>{{ request.user.username }}</b></p>
+            <h2 class="fw-bold mb-1">
+                <i class="fas fa-user-shield text-primary"></i>
+                Admin Dashboard
+            </h2>
+
+            <p class="text-muted mb-0">
+                Welcome back,
+                <strong>{{ request.user.consultant_name }}</strong>
+            </p>
         </div>
 
-        <div class="d-flex gap-2">
-            <a href="{% url 'logout' %}" class="btn btn-danger fw-bold shadow-sm px-4">
-                Logout
-            </a>
-        </div>
-    </div>
+      
 
-    <!-- STATS CARDS -->
-    <div class="row g-3 mb-4">
-
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 stat-card p-4">
-                <h6 class="text-muted mb-1">Total Consultants</h6>
-                <h3 class="fw-bold text-primary">{{ total_consultants }}</h3>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 stat-card p-4">
-                <h6 class="text-muted mb-1">Total Sheets</h6>
-                <h3 class="fw-bold text-success">{{ total_sheets }}</h3>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 stat-card p-4">
-                <h6 class="text-muted mb-1">System Records</h6>
-                <h3 class="fw-bold text-danger">{{ total_rows }}</h3>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- MAIN TABLE CARD -->
-    <div class="card shadow-lg border-0 admin-card">
-
-        <div class="card-header bg-danger text-white fw-bold p-3"
-             style="border-radius: 18px 18px 0 0;">
-            Consultant Sheets Overview
-        </div>
-
-        <div class="card-body p-4">
-
-            <!-- FILTER + SEARCH ROW -->
-            <div class="row mb-4 g-3">
-                <div class="col-md-5">
-                    <input type="text" id="searchInput" class="form-control search-box"
-                           placeholder="Search by consultant name / sheet name...">
-                </div>
-
-                <div class="col-md-4">
-                    <select id="consultantFilter" class="form-control filter-box">
-                        <option value="">-- Filter by Consultant --</option>
-                        {% for consultant in consultants %}
-                        <option value="{{ consultant.consultant_name }}">
-                            {{ consultant.consultant_name }} ({{ consultant.emp_id }})
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="col-md-3">
-                    <select id="sortFilter" class="form-control filter-box">
-                        <option value="latest">Sort: Latest</option>
-                        <option value="oldest">Sort: Oldest</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- TABLE -->
-            <div class="table-responsive">
-                <table class="table table-hover table-bordered align-middle" id="sheetTable">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>#</th>
-                            <th>Consultant</th>
-                            <th>Employee ID</th>
-                            <th>Sheet Name</th>
-                            <th>Sheet Type</th>
-                            <th>Created Date</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="tableBody">
-                        {% for sheet in sheets %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-
-                            <td class="fw-bold text-primary">
-                                {{ sheet.consultant.consultant_name }}
-                            </td>
-
-                            <td>{{ sheet.consultant.emp_id }}</td>
-
-                            <td class="fw-bold text-dark">{{ sheet.sheet_name }}</td>
-
-                            <td class="text-uppercase fw-bold">{{ sheet.sheet_type }}</td>
-
-                            <td data-date="{{ sheet.created_at|date:'U' }}">
-                                {{ sheet.created_at|date:"d M Y, h:i A" }}
-                            </td>
-
-                            <td class="text-center">
-
-                                <a href="{% url 'view_sheet' sheet.id %}"
-                                   class="btn btn-sm btn-success px-3">
-                                    View
-                                </a>
-
-                                <a href="{% url 'download_sheet_excel' sheet.id %}"
-                                   class="btn btn-sm btn-primary px-3">
-                                    Export
-                                </a>
-
-                                <a href="{% url 'delete_sheet' sheet.id %}"
-                                   class="btn btn-sm btn-danger px-3"
-                                   onclick="return confirm('Are you sure you want to delete this sheet?');">
-                                    Delete
-                                </a>
-
-                            </td>
-                        </tr>
-
-                        {% empty %}
-                        <tr>
-                            <td colspan="7" class="text-center text-danger fw-bold">
-                                No Sheets Found
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-
-                </table>
-            </div>
-
-        </div>
     </div>
 
 </div>
+<!-- ================= DASHBOARD BUTTONS ================= -->
 
-<!-- SEARCH + FILTER + SORT SCRIPT -->
+<div class="d-flex flex-wrap justify-content-end gap-2">
+
+    <a href="{% url 'student_register' %}"
+       class="btn btn-success btn-sm dashboard-btn">
+        ➕ Student Register
+    </a>
+
+    <a href="{% url 'add_student' %}"
+       class="btn btn-primary btn-sm dashboard-btn">
+        👨‍🎓 Add Student
+    </a>
+
+    <a href="{% url 'student_list' %}"
+       class="btn btn-info btn-sm dashboard-btn">
+        📋 Students
+    </a>
+
+    <a href="{% url 'register' %}"
+       class="btn btn-secondary btn-sm dashboard-btn">
+        👨‍💼 Add Consultant
+    </a>
+
+    <a href="{% url 'admin_view_feedback' %}"
+       class="btn btn-warning btn-sm dashboard-btn">
+        ⭐ Feedback
+    </a>
+
+    <a href="{% url 'logout' %}"
+       class="btn btn-danger btn-sm dashboard-btn">
+        🚪 Logout
+    </a>
+
+</div>
+    <!-- STATISTICS -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+
+            <div class="stat-card d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <div class="stat-title">
+                        Total Consultants
+                    </div>
+
+                    <div class="stat-value text-primary">
+                        {{ total_consultants }}
+                    </div>
+
+                </div>
+
+                <div class="stat-icon icon-blue">
+                    👨‍💻
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="stat-card d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <div class="stat-title">
+                        Total Sheets
+                    </div>
+
+                    <div class="stat-value text-success">
+                        {{ total_sheets }}
+                    </div>
+
+                </div>
+
+                <div class="stat-icon icon-green">
+                    📄
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="stat-card d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <div class="stat-title">
+                        Total Records
+                    </div>
+
+                    <div class="stat-value text-danger">
+                        {{ total_rows }}
+                    </div>
+
+                </div>
+
+                <div class="stat-icon icon-red">
+                    📊
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    
+
+        
+
+<!-- CONSULTANT-WISE EXPANDABLE SHEETS -->
+<!-- =============================================== -->
+
+<div class="admin-card mt-4">
+
+    <div class="card-header-custom d-flex justify-content-between align-items-center">
+
+        <span>👨‍💻 Consultant Sheets Overview</span>
+
+        <span class="badge bg-light text-dark">
+            {{ total_consultants }} Consultants
+        </span>
+
+    </div>
+
+    <div class="card-body">
+
+            <!-- SEARCH + FILTER -->
+
+            <div class="row mb-4">
+
+                <div class="col-md-6">
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        class="form-control search-box"
+                        placeholder="Search Consultant">
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <select
+                        id="consultantFilter"
+                        class="form-control filter-box">
+
+                        <option value="">
+                            All Consultants
+                        </option>
+
+                        {% for consultant in consultants %}
+
+                        <option value="{{ consultant.consultant_name|lower }}">
+                            {{ consultant.consultant_name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <select
+                        id="sortFilter"
+                        class="form-control filter-box">
+
+                        <option value="asc">
+                            A-Z
+                        </option>
+
+                        <option value="desc">
+                            Z-A
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+        <!-- CONSULTANT LIST -->
+
+        <div id="consultantContainer">
+
+        {% for consultant in consultants %}
+
+        <div class="consultant-card card mb-4 shadow-sm">
+
+            <!-- HEADER -->
+
+            <div
+                class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h5 class="mb-1 consultant-title">
+
+                        {{ consultant.consultant_name }}
+
+                    </h5>
+
+                    <small>
+
+                        Employee ID :
+                        {{ consultant.emp_id }}
+
+                    </small>
+
+                </div>
+
+                <button
+                    class="btn btn-light btn-sm fw-bold"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#consultant{{ consultant.id }}"
+                    aria-expanded="false">
+
+                    📂 View Sheets
+
+                </button>
+
+            </div>
+
+            <!-- SHEET TABLE -->
+
+            <div
+                id="consultant{{ consultant.id }}"
+                class="collapse">
+
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-hover mb-0">
+
+                        <thead class="table-dark">
+
+                        <tr>
+
+                            <th width="6%">#</th>
+                            <th>Sheet Name</th>
+                            <th>Sheet Type</th>
+                            <th>Created Date</th>
+                            <th width="300">Actions</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        {% with found=False %}
+
+                        {% for sheet in sheets %}
+
+                        {% if sheet.consultant.id == consultant.id %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ forloop.counter }}
+
+                            </td>
+
+                            <td class="fw-bold text-primary">
+
+                                {{ sheet.sheet_name }}
+
+                            </td>
+
+                            <td>
+
+                                <span class="badge bg-secondary">
+
+                                    {{ sheet.sheet_type }}
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                {{ sheet.created_at|date:"d M Y h:i A" }}
+
+                            </td>
+
+                            <td>
+<td>
+
+    {% if sheet.sheet_type == "ATTENDANCE" %}
+
+    <a href="{% url 'attendance_sheet' sheet.id %}"
+       class="btn btn-success btn-sm">
+        👁 View
+    </a>
+
+{% else %}
+
+    <a href="{% url 'view_sheet' sheet.id %}"
+       class="btn btn-success btn-sm">
+        👁 View
+    </a>
+
+{% endif %}
+
+    <a href="{% url 'download_sheet_excel' sheet.id %}"
+       class="btn btn-primary btn-sm">
+        📥 Export
+    </a>
+
+    <a href="{% url 'delete_sheet' sheet.id %}"
+       class="btn btn-danger btn-sm"
+       onclick="return confirm('Delete this sheet?');">
+        🗑 Delete
+    </a>
+</td>
+</tr>
+
+{% endif %}
+
+{% empty %}
+
+<tr>
+    <td colspan="5" class="text-center text-muted">
+        No sheets uploaded.
+    </td>
+</tr>
+
+{% endfor %}
+
+{% endwith %}
+
+</tbody>
+</table>
+
+</div>
+</div>
+
+</div>
+
+{% empty %}
+
+<div class="alert alert-warning text-center">
+    No Consultants Available
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</div>
+</td>
+<!-- ========================================= -->
+<!-- SEARCH + FILTER + SORT + EXPAND -->
+<!-- ========================================= -->
+
 <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // ------------------------------------
+    // Elements
+    // ------------------------------------
+
     const searchInput = document.getElementById("searchInput");
     const consultantFilter = document.getElementById("consultantFilter");
     const sortFilter = document.getElementById("sortFilter");
-    const tableBody = document.getElementById("tableBody");
 
-    function filterTable() {
-        let searchValue = searchInput.value.toLowerCase();
-        let consultantValue = consultantFilter.value.toLowerCase();
+    const container = document.getElementById("consultantContainer");
 
-        let rows = tableBody.querySelectorAll("tr");
+    const consultantCards = Array.from(
+        document.querySelectorAll(".consultant-card")
+    );
 
-        rows.forEach(row => {
-            let rowText = row.innerText.toLowerCase();
+    // ------------------------------------
+    // SEARCH CONSULTANT
+    // ------------------------------------
 
-            let matchSearch = rowText.includes(searchValue);
-            let matchConsultant = consultantValue === "" || rowText.includes(consultantValue);
+    function filterConsultants(){
 
-            row.style.display = (matchSearch && matchConsultant) ? "" : "none";
-        });
-    }
+        const searchText =
+            searchInput.value.toLowerCase().trim();
 
-    function sortTable() {
-        let rowsArray = Array.from(tableBody.querySelectorAll("tr"));
+        const selectedConsultant =
+            consultantFilter.value.toLowerCase();
 
-        rowsArray.sort((a, b) => {
-            let dateA = parseInt(a.querySelector("td[data-date]")?.getAttribute("data-date") || 0);
-            let dateB = parseInt(b.querySelector("td[data-date]")?.getAttribute("data-date") || 0);
+        consultantCards.forEach(function(card){
 
-            if (sortFilter.value === "latest") {
-                return dateB - dateA;
-            } else {
-                return dateA - dateB;
+            const consultantName =
+                card.querySelector(".consultant-title")
+                .innerText
+                .toLowerCase();
+
+            let visible = true;
+
+            // Search
+            if(
+                searchText !== "" &&
+                !consultantName.includes(searchText)
+            ){
+                visible = false;
             }
+
+            // Dropdown Filter
+            if(
+                selectedConsultant !== "" &&
+                consultantName !== selectedConsultant
+            ){
+                visible = false;
+            }
+
+            card.style.display = visible ? "" : "none";
+
         });
 
-        rowsArray.forEach(row => tableBody.appendChild(row));
     }
 
-    searchInput.addEventListener("keyup", filterTable);
-    consultantFilter.addEventListener("change", filterTable);
-    sortFilter.addEventListener("change", sortTable);
+    // ------------------------------------
+    // SORT CONSULTANTS
+    // ------------------------------------
+
+    function sortConsultants(){
+
+        consultantCards.sort(function(a,b){
+
+            const nameA =
+                a.querySelector(".consultant-title")
+                .innerText
+                .toLowerCase();
+
+            const nameB =
+                b.querySelector(".consultant-title")
+                .innerText
+                .toLowerCase();
+
+            if(sortFilter.value==="az"){
+                return nameA.localeCompare(nameB);
+            }
+            else{
+                return nameB.localeCompare(nameA);
+            }
+
+        });
+
+        consultantCards.forEach(function(card){
+
+            container.appendChild(card);
+
+        });
+
+    }
+
+    // ------------------------------------
+    // ONLY ONE CONSULTANT OPEN
+    // ------------------------------------
+
+    const collapses =
+        document.querySelectorAll(".collapse");
+
+    collapses.forEach(function(current){
+
+        current.addEventListener(
+            "show.bs.collapse",
+            function(){
+
+                collapses.forEach(function(other){
+
+                    if(other!==current){
+
+                        const instance =
+                            bootstrap.Collapse.getInstance(other);
+
+                        if(instance){
+                            instance.hide();
+                        }
+                        else{
+
+                            new bootstrap.Collapse(other,{
+                                toggle:false
+                            }).hide();
+
+                        }
+
+                    }
+
+                });
+
+            }
+        );
+
+    });
+
+    // ------------------------------------
+    // EVENTS
+    // ------------------------------------
+
+    if(searchInput){
+        searchInput.addEventListener(
+            "keyup",
+            filterConsultants
+        );
+    }
+
+    if(consultantFilter){
+        consultantFilter.addEventListener(
+            "change",
+            filterConsultants
+        );
+    }
+
+    if(sortFilter){
+        sortFilter.addEventListener(
+            "change",
+            sortConsultants
+        );
+    }
+
+});
+
 </script>
+    </div>
+</div>
+
+<!-- ========================================= -->
+<!-- EXTRA STYLING -->
+<!-- ========================================= -->
+
+<style>
+
+
+</style>
+
+<!-- ========================================= -->
+<!-- PAGE FOOTER -->
+<!-- ========================================= -->
+
+<div class="text-center mt-4 mb-3 text-muted">
+
+    <small>
+
+        © 2026 Technovalley Software India Pvt Ltd |
+        Staff Excel Sheet Management System
+
+    </small>
+
+</div>
 
 {% endblock %}

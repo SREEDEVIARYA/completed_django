@@ -1,0 +1,412 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    body {
+        background: #f4f6f9;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    /* HEADER */
+    .admin-header {
+        background: linear-gradient(135deg, #111827, #1f2937);
+        color: white;
+        border-radius: 22px;
+        padding: 25px 30px;
+        box-shadow: 0px 18px 40px rgba(0,0,0,0.18);
+    }
+
+    .admin-header h2 {
+        font-weight: 900;
+        margin: 0;
+    }
+
+    .admin-header p {
+        margin: 0;
+        opacity: 0.85;
+        font-size: 14px;
+    }
+
+    /* BUTTONS */
+    .btn-soft {
+        border-radius: 14px;
+        font-weight: 800;
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+
+    .btn-soft-danger {
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.30);
+        color: #b91c1c;
+    }
+
+    .btn-soft-danger:hover {
+        background: rgba(239, 68, 68, 0.22);
+        color: #991b1b;
+    }
+
+    .btn-soft-primary {
+        background: rgba(59, 130, 246, 0.12);
+        border: 1px solid rgba(59, 130, 246, 0.25);
+        color: #2563eb;
+    }
+
+    .btn-soft-primary:hover {
+        background: rgba(59, 130, 246, 0.20);
+        color: #1d4ed8;
+    }
+
+    .btn-soft-success {
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.30);
+        color: #047857;
+    }
+
+    .btn-soft-success:hover {
+        background: rgba(16, 185, 129, 0.22);
+        color: #065f46;
+    }
+
+    /* STAT CARDS */
+    .stat-card {
+        border-radius: 18px;
+        border: none;
+        padding: 22px;
+        box-shadow: 0px 12px 25px rgba(0,0,0,0.08);
+        transition: 0.3s;
+        background: white;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 16px 35px rgba(0,0,0,0.12);
+    }
+
+    .stat-title {
+        font-size: 13px;
+        color: #6b7280;
+        font-weight: 800;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+    }
+
+    .stat-value {
+        font-size: 28px;
+        font-weight: 900;
+        margin: 0;
+        color: #111827;
+    }
+
+    .stat-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        color: white;
+    }
+
+    .icon-blue { background: #2563eb; }
+    .icon-green { background: #16a34a; }
+    .icon-red { background: #dc2626; }
+
+    /* CARD TABLE */
+    .admin-card {
+        border-radius: 20px;
+        border: none;
+        overflow: hidden;
+        box-shadow: 0px 12px 28px rgba(0,0,0,0.08);
+        background: white;
+    }
+
+    .card-header-custom {
+        background: #111827;
+        color: white;
+        font-weight: 900;
+        padding: 16px 20px;
+        font-size: 15px;
+    }
+
+    table th, table td {
+        vertical-align: middle;
+        text-align: center;
+        font-size: 14px;
+        padding: 12px;
+        white-space: nowrap;
+    }
+
+    thead th {
+        background: #1f2937 !important;
+        color: white;
+    }
+
+    /* SEARCH + FILTER */
+    .search-box, .filter-box {
+        border-radius: 14px;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        font-size: 14px;
+    }
+
+    .search-box:focus, .filter-box:focus {
+        border-color: #3b82f6;
+        box-shadow: 0px 0px 0px 4px rgba(59, 130, 246, 0.25);
+    }
+
+    /* TABLE BUTTONS */
+    .btn-table {
+        border-radius: 12px;
+        font-weight: 800;
+        padding: 6px 14px;
+        font-size: 13px;
+    }
+
+    /* BADGE */
+    .badge-sheet {
+        padding: 7px 14px;
+        border-radius: 14px;
+        font-size: 12px;
+        font-weight: 900;
+    }
+</style>
+
+
+<div class="container mt-4 mb-5">
+
+    <!-- HEADER -->
+    <div class="admin-header mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div>
+                <h2>Admin Dashboard</h2>
+                <p>
+                    Welcome Admin, <b>{{ request.user.username }}</b> |
+                    Technovalley Software India Pvt Ltd
+                </p>
+            </div>
+            <a href="{% url 'admin_view_feedback' %}" class="btn btn-warning fw-bold">
+    📌 View Student Feedback
+</a>
+<div class="d-flex gap-2">
+
+    <a href="{% url 'student_register' %}" class="btn btn-success fw-bold">
+        ➕ Add Student
+    </a>
+
+    <a href="{% url 'register' %}" class="btn btn-primary fw-bold">
+        ➕ Add Consultant
+    </a>
+
+    <a href="{% url 'logout' %}" class="btn btn-danger fw-bold">
+        🚪 Logout
+    </a>
+
+</div>
+
+
+        </div>
+    </div>
+
+
+    <!-- STATS -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+            <div class="stat-card d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-title">Total Consultants</div>
+                    <h3 class="stat-value text-primary">{{ total_consultants }}</h3>
+                </div>
+                <div class="stat-icon icon-blue">👨‍💻</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-card d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-title">Total Sheets</div>
+                    <h3 class="stat-value text-success">{{ total_sheets }}</h3>
+                </div>
+                <div class="stat-icon icon-green">📄</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-card d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-title">System Records</div>
+                    <h3 class="stat-value text-danger">{{ total_rows }}</h3>
+                </div>
+                <div class="stat-icon icon-red">📊</div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- MAIN TABLE -->
+    <div class="admin-card">
+
+        <div class="card-header-custom">
+            📌 Consultant Sheets Overview
+        </div>
+
+        <div class="card-body p-4">
+
+            <!-- FILTER + SEARCH -->
+            <div class="row mb-4 g-3">
+
+                <div class="col-md-5">
+                    <input type="text" id="searchInput" class="form-control search-box"
+                           placeholder="🔍 Search by consultant name / sheet name...">
+                </div>
+
+                <div class="col-md-4">
+                    <select id="consultantFilter" class="form-control filter-box">
+                        <option value="">-- Filter by Consultant --</option>
+                        {% for consultant in consultants %}
+                        <option value="{{ consultant.consultant_name }}">
+                            {{ consultant.consultant_name }} ({{ consultant.emp_id }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <select id="sortFilter" class="form-control filter-box">
+                        <option value="latest">Sort: Latest</option>
+                        <option value="oldest">Sort: Oldest</option>
+                    </select>
+                </div>
+
+            </div>
+
+
+            <!-- TABLE -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle mb-0" id="sheetTable">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Consultant</th>
+                            <th>Employee ID</th>
+                            <th>Sheet Name</th>
+                            <th>Sheet Type</th>
+                            <th>Created Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tableBody">
+
+                        {% for sheet in sheets %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+
+                            <td class="fw-bold text-primary">
+                                {{ sheet.consultant.consultant_name }}
+                            </td>
+
+                            <td class="fw-bold">{{ sheet.consultant.emp_id }}</td>
+
+                            <td class="fw-bold text-dark">{{ sheet.sheet_name }}</td>
+
+                            <td>
+                                <span class="badge bg-dark badge-sheet">
+                                    {{ sheet.sheet_type }}
+                                </span>
+                            </td>
+
+                            <td data-date="{{ sheet.created_at|date:'U' }}">
+                                {{ sheet.created_at|date:"d M Y, h:i A" }}
+                            </td>
+
+                            <td>
+
+                                <a href="{% url 'view_sheet' sheet.id %}"
+                                   class="btn btn-sm btn-soft-success btn-table">
+                                    View
+                                </a>
+
+                                <a href="{% url 'download_sheet_excel' sheet.id %}"
+                                   class="btn btn-sm btn-soft-primary btn-table">
+                                    Export
+                                </a>
+
+                                <a href="{% url 'delete_sheet' sheet.id %}"
+                                   class="btn btn-sm btn-soft-danger btn-table"
+                                   onclick="return confirm('Are you sure you want to delete this sheet?');">
+                                    Delete
+                                </a>
+
+                            </td>
+                        </tr>
+
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center text-danger fw-bold">
+                                No Sheets Found
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- SEARCH + FILTER + SORT SCRIPT -->
+<script>
+    const searchInput = document.getElementById("searchInput");
+    const consultantFilter = document.getElementById("consultantFilter");
+    const sortFilter = document.getElementById("sortFilter");
+    const tableBody = document.getElementById("tableBody");
+
+    function filterTable() {
+        let searchValue = searchInput.value.toLowerCase();
+        let consultantValue = consultantFilter.value.toLowerCase();
+
+        let rows = tableBody.querySelectorAll("tr");
+
+        rows.forEach(row => {
+            let rowText = row.innerText.toLowerCase();
+            let matchSearch = rowText.includes(searchValue);
+            let matchConsultant = consultantValue === "" || rowText.includes(consultantValue);
+
+            row.style.display = (matchSearch && matchConsultant) ? "" : "none";
+        });
+    }
+
+    function sortTable() {
+        let rowsArray = Array.from(tableBody.querySelectorAll("tr"));
+
+        rowsArray.sort((a, b) => {
+            let dateA = parseInt(a.querySelector("td[data-date]")?.getAttribute("data-date") || 0);
+            let dateB = parseInt(b.querySelector("td[data-date]")?.getAttribute("data-date") || 0);
+
+            if (sortFilter.value === "latest") {
+                return dateB - dateA;
+            } else {
+                return dateA - dateB;
+            }
+        });
+
+        rowsArray.forEach(row => tableBody.appendChild(row));
+    }
+
+    searchInput.addEventListener("keyup", filterTable);
+    consultantFilter.addEventListener("change", filterTable);
+    sortFilter.addEventListener("change", sortTable);
+</script>
+
+{% endblock %}

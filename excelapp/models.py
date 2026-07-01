@@ -4,7 +4,7 @@ from accounts.models import CustomUser
 
 
 # ==========================================================
-# EXCEL FILE UPLOAD MODEL (Optional)
+# EXCEL FILE UPLOAD MODEL
 # ==========================================================
 class ExcelFile(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -38,7 +38,7 @@ class ConsultantSheet(models.Model):
 
 
 # ==========================================================
-# SHEET ROW MODEL (col1-col33 for all 3 sheets)
+# SHEET ROW MODEL
 # ==========================================================
 class SheetRow(models.Model):
     sheet = models.ForeignKey(
@@ -87,3 +87,59 @@ class SheetRow(models.Model):
 
     def __str__(self):
         return f"Row for {self.sheet.sheet_name} ({self.sheet.sheet_type})"
+    
+# models.py
+
+from django.db import models
+from accounts.models import CustomUser
+
+from django.db import models
+
+class Student(models.Model):
+
+    MODE_CHOICES = (
+        ('ONLINE', 'Online'),
+        ('OFFLINE', 'Offline'),
+        ('HYBRID', 'Hybrid'),
+    )
+
+    student_name = models.CharField(max_length=100)
+    batch_time = models.CharField(max_length=50)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    fees_pending = models.DecimalField(max_digits=10, decimal_places=2)
+    course = models.CharField(max_length=100)
+
+    mode_of_class = models.CharField(
+        max_length=20,
+        choices=MODE_CHOICES,
+        default='ONLINE'
+    )
+
+    allocated_consultant = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.student_name
+    
+class Notification(models.Model):
+
+    consultant = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name="notifications"
+    )
+
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE
+    )
+
+    message = models.CharField(max_length=255)
+
+    is_read = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.message

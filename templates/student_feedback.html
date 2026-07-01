@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    body {
+        background: #f4f6f9;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    .feedback-card {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0px 12px 35px rgba(0, 0, 0, 0.12);
+        border: none;
+    }
+
+    .feedback-header {
+        background: linear-gradient(135deg, #198754, #0f5132);
+        padding: 25px;
+        text-align: center;
+        color: white;
+    }
+
+    .feedback-header h3 {
+        font-weight: 900;
+        margin-bottom: 5px;
+    }
+
+    .feedback-header p {
+        margin: 0;
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    .form-label {
+        font-weight: 700;
+        color: #111827;
+    }
+
+    input, select, textarea {
+        border-radius: 12px !important;
+        padding: 12px !important;
+        border: 1px solid #d1d5db !important;
+        transition: 0.2s;
+        width: 100%;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: #198754 !important;
+        box-shadow: 0px 0px 0px 4px rgba(25, 135, 84, 0.25) !important;
+    }
+
+    textarea {
+        min-height: 120px;
+    }
+
+    .radio-box {
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        padding: 12px;
+        border-radius: 14px;
+        margin-top: 10px;
+    }
+
+    .form-check {
+        padding: 8px 12px;
+        border-radius: 10px;
+        transition: 0.2s;
+    }
+
+    .form-check:hover {
+        background: rgba(25, 135, 84, 0.08);
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #198754, #0f5132);
+        border: none;
+        padding: 12px;
+        border-radius: 14px;
+        font-weight: 900;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0px 12px 25px rgba(25, 135, 84, 0.35);
+    }
+
+    .btn-back {
+        border-radius: 14px;
+        font-weight: 800;
+        padding: 10px 15px;
+    }
+
+    @media(max-width: 768px) {
+        .feedback-header {
+            padding: 18px;
+        }
+
+        .feedback-header h3 {
+            font-size: 20px;
+        }
+    }
+</style>
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-md-11 col-sm-12">
+
+            <div class="card feedback-card">
+
+                <!-- HEADER -->
+                <div class="feedback-header">
+                    <h3>Student Feedback Form</h3>
+                    <p>Please provide your valuable feedback to improve our training quality</p>
+                </div>
+
+                <!-- BODY -->
+                <div class="card-body p-4">
+
+                    <!-- MESSAGES -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success fw-bold text-center">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="row">
+
+                            {% for field in form %}
+                                <div class="col-md-12 mb-4">
+
+                                    <label class="form-label">{{ field.label }}</label>
+
+                                    {% if field.field.widget.input_type == "radio" %}
+
+                                        <div class="radio-box">
+                                            {% for radio in field %}
+                                                <div class="form-check">
+                                                    {{ radio.tag }}
+                                                    <label class="form-check-label fw-semibold">
+                                                        {{ radio.choice_label }}
+                                                    </label>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+
+                                    {% else %}
+                                        <div class="mt-2">
+                                            {{ field }}
+                                        </div>
+                                    {% endif %}
+
+                                    {% if field.errors %}
+                                        <div class="text-danger small fw-bold mt-2">
+                                            {{ field.errors }}
+                                        </div>
+                                    {% endif %}
+
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+                        <!-- SUBMIT BUTTON -->
+                        <button type="submit" class="btn btn-submit w-100 text-white">
+                            ✅ Submit Feedback
+                        </button>
+                    </form>
+
+                    <!-- BACK BUTTON -->
+                    <div class="text-center mt-4">
+                        <a href="{% url 'student_dashboard' %}" class="btn btn-outline-dark btn-back">
+                            ⬅ Back to Dashboard
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <p class="text-center text-muted mt-3" style="font-size: 13px;">
+                © 2026 Technovalley Software India Pvt Ltd | Feedback Portal
+            </p>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

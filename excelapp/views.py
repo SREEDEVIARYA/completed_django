@@ -13,17 +13,25 @@ from .models import ConsultantSheet, SheetRow
 # =========================================================
 # CONSULTANT DASHBOARD
 # =========================================================
+from .models import ConsultantSheet, Notification
+
 @login_required
 def consultant_dashboard(request):
     if request.user.role != "consultant":
         return redirect("admin_dashboard")
 
     consultant = request.user
+
     sheets = ConsultantSheet.objects.filter(consultant=consultant)
 
     student_sheet = sheets.filter(sheet_type="STUDENT").first()
     attendance_sheet = sheets.filter(sheet_type="ATTENDANCE").first()
     completed_sheet = sheets.filter(sheet_type="COMPLETED").first()
+
+    unread_count = Notification.objects.filter(
+        consultant=consultant,
+        is_read=False
+    ).count()
 
     context = {
         "user": consultant,
@@ -31,6 +39,7 @@ def consultant_dashboard(request):
         "student_sheet": student_sheet,
         "attendance_sheet": attendance_sheet,
         "completed_sheet": completed_sheet,
+        "unread_count": unread_count,
     }
 
     return render(request, "consultant_dashboard.html", context)
@@ -166,6 +175,24 @@ def view_sheet(request, sheet_id):
 
     return render(request, "view_sheet.html", {"sheet": sheet, "rows": rows})
 
+@login_required
+def view_attendancesheet(request, sheet_id):
+    sheet = get_object_or_404(ConsultantSheet, id=sheet_id)
+
+    if request.user.role == "consultant" and sheet.consultant != request.user:
+        messages.error(request, "Access Denied!")
+        return redirect("consultant_dashboard")
+
+    rows = SheetRow.objects.filter(sheet=sheet).order_by("id")
+
+    context = {
+        "sheet": sheet,
+        "rows": rows,
+        "days": range(1, 32),   # Add this
+    }
+
+    return render(request, "attendance_sheet.html", context)
+
 
 # =========================================================
 # DELETE SHEET (CONSULTANT)
@@ -257,19 +284,39 @@ def download_sheet_excel(request, sheet_id):
     wb.save(response)
     return response
 
-import json
-from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-from .models import ConsultantSheet, SheetRow
-
-
 @login_required
-def attendance_sheet_view(request, sheet_id):
+def view_sheet_redirect(request, sheet_id):
     sheet = get_object_or_404(ConsultantSheet, id=sheet_id)
 
-    # Only allow same consultant to open
+    # Admin can view all
+    # Consultant can view only their sheets
     if request.user.role != "admin" and sheet.consultant != request.user:
+        messages.error(request, "You are not allowed to view this sheet!")
+        return redirect("consultant_dashboard")
+
+    if sheet.sheet_type == "STUDENT":
+        return redirect("student_sheet_view", sheet_id=sheet.id)
+
+    elif sheet.sheet_type == "ATTENDANCE":
+        return redirect("attendance_sheet_view", sheet_id=sheet.id)
+
+    elif sheet.sheet_type == "COMPLETED":
+        return redirect("completed_sheet_view", sheet_id=sheet.id)
+
+    else:
+        messages.error(request, "Invalid Sheet Type!")
+        return redirect("admin_dashboard")
+
+
+# ======================================================
+# STUDENT SHEET VIEW
+# ======================================================
+@login_required
+def student_sheet_view(request, sheet_id):
+    sheet = get_object_or_404(ConsultantSheet, id=sheet_id)
+
+    if request.user.role != "admin" and sheet.consultant != request.user:
+        messages.error(request, "You are not allowed to view this sheet!")
         return redirect("consultant_dashboard")
 
     rows = SheetRow.objects.filter(sheet=sheet).order_by("id")
@@ -277,10 +324,68 @@ def attendance_sheet_view(request, sheet_id):
     context = {
         "sheet": sheet,
         "rows": rows,
-        "days": range(1, 32)   # 1 to 31
+    }
+    return render(request, "student_sheet.html", context)
+
+
+# ======================================================
+# ATTENDANCE SHEET VIEW
+# ======================================================
+@login_required
+def attendance_sheet_view(request, sheet_id):
+    sheet = get_object_or_404(ConsultantSheet, id=sheet_id)
+
+    if request.user.role != "admin" and sheet.consultant != request.user:
+        messages.error(request, "You are not allowed to view this sheet!")
+        return redirect("consultant_dashboard")
+
+    rows = SheetRow.objects.filter(sheet=sheet).order_by("id")
+
+    context = {
+        "sheet": sheet,
+        "rows": rows,
+        "days": range(1, 32)  # 1 to 31
     }
     return render(request, "attendance_sheet.html", context)
 
+
+# ======================================================
+# COMPLETED SHEET VIEW
+# ======================================================
+@login_required
+def completed_sheet_view(request, sheet_id):
+    sheet = get_object_or_404(ConsultantSheet, id=sheet_id)
+
+    if request.user.role != "admin" and sheet.consultant != request.user:
+        messages.error(request, "You are not allowed to view this sheet!")
+        return redirect("consultant_dashboard")
+
+    rows = SheetRow.objects.filter(sheet=sheet).order_by("id")
+
+    context = {
+        "sheet": sheet,
+        "rows": rows,
+    }
+    return render(request, "completed_sheet.html", context)
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from excelapp.models import ConsultantSheet, SheetRow
+
+@login_required
+def attendance_sheet_view(request, sheet_id):
+    sheet = get_object_or_404(ConsultantSheet, id=sheet_id)
+
+    if request.user.role != "admin" and sheet.consultant != request.user:
+        return redirect("consultant_dashboard")
+
+    rows = SheetRow.objects.filter(sheet=sheet).order_by("id")
+
+    return render(request, "attendance_sheet.html", {
+        "sheet": sheet,
+        "rows": rows,
+        "days": range(1, 32)
+    })
 
 @login_required
 def save_attendance_data(request, sheet_id):
@@ -489,3 +594,185 @@ def save_attendance_data(request, sheet_id):
         return JsonResponse({"message": "Attendance Saved Successfully!"})
 
     return JsonResponse({"message": "Invalid Request"}, status=400)
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
+
+@login_required
+def student_change_password(request):
+
+
+    if request.method == "POST":
+
+        current_password = request.POST.get("current_password")
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_password")
+
+        # Check old password
+        if not request.user.check_password(current_password):
+            messages.error(request, "Current password is incorrect.")
+            return redirect("student_change_password")
+
+        # Match passwords
+        if new_password != confirm_password:
+            messages.error(request, "New passwords do not match.")
+            return redirect("student_change_password")
+
+        # Optional password length check
+        if len(new_password) < 8:
+            messages.error(request, "Password must be at least 8 characters.")
+            return redirect("student_change_password")
+
+        # Save new password
+        request.user.set_password(new_password)
+        request.user.save()
+
+        # Keep user logged in
+        update_session_auth_hash(request, request.user)
+
+        messages.success(request, "Password updated successfully.")
+
+        return redirect("student_dashboard")
+
+    return render(request, "student_change_password.html")
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
+
+@login_required
+def consultant_change_password(request):
+
+
+    if request.method == "POST":
+        current_password = request.POST.get("current_password")
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_password")
+
+        if not request.user.check_password(current_password):
+            messages.error(request, "Current password is incorrect.")
+            return redirect("consultant_change_password")
+
+        if new_password != confirm_password:
+            messages.error(request, "New passwords do not match.")
+            return redirect("consultant_change_password")
+
+        request.user.set_password(new_password)
+        request.user.save()
+
+        # Keep consultant logged in
+        update_session_auth_hash(request, request.user)
+
+        messages.success(request, "Password changed successfully.")
+        return redirect("consultant_dashboard")
+
+    return render(request, "consultant_change_password.html")
+from accounts.models import CustomUser
+from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+
+from .models import Student, Notification
+from .forms import StudentForm
+from accounts.models import CustomUser
+
+def add_student(request):
+
+    if request.method == "POST":
+
+        form = StudentForm(request.POST)
+
+        if form.is_valid():
+
+            student = form.save()
+
+            try:
+                consultant = CustomUser.objects.get(
+    consultant_name=student.allocated_consultant,
+    role="consultant"
+)
+
+                Notification.objects.create(
+                    consultant=consultant,
+                    student=student,
+                    message=f"New Student Assigned : {student.student_name}"
+                )
+
+            except CustomUser.DoesNotExist:
+                messages.warning(
+                    request,
+                    "Student added, but consultant username not found."
+                )
+
+            messages.success(request, "Student Added Successfully")
+            return redirect("student_list")
+
+    else:
+        form = StudentForm()
+
+    return render(request, "add_student.html", {"form": form})
+def student_list(request):
+
+    students=Student.objects.all().order_by("-id")
+
+    return render(request,"student_list.html",{"students":students})
+
+def edit_student(request,id):
+
+    student=get_object_or_404(Student,id=id)
+
+    if request.method=="POST":
+
+        form=StudentForm(request.POST,instance=student)
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect("student_list")
+
+    else:
+
+        form=StudentForm(instance=student)
+
+    return render(request,"add_student.html",{"form":form})
+
+def delete_student(request,id):
+
+    student=get_object_or_404(Student,id=id)
+
+    student.delete()
+
+    return redirect("student_list")
+
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def consultant_notifications(request):
+
+    notifications = Notification.objects.filter(
+        consultant=request.user
+    ).order_by('-created_at')
+
+    return render(
+        request,
+        "consultant_notifications.html",
+        {"notifications":notifications}
+    )
+
+@login_required
+def student_detail(request,id):
+
+    student=Student.objects.get(id=id)
+
+    Notification.objects.filter(
+        consultant=request.user,
+        student=student
+    ).update(is_read=True)
+
+    return render(
+        request,
+        "student_detail.html",
+        {"student":student}
+    )

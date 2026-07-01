@@ -1,0 +1,242 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <div>
+                    <h3 class="fw-bold mb-1">
+                        <i class="bi bi-people-fill text-primary"></i>
+                        Student Management
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        View, Edit and Manage Student Details
+                    </p>
+                </div>
+
+                <div class="mt-3 mt-md-0">
+
+                    <a href="{% url 'add_student' %}"
+                       class="btn btn-success">
+
+                        <i class="bi bi-person-plus-fill"></i>
+                        Add Student
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Search -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-5">
+
+                    <input type="text"
+                           id="searchInput"
+                           class="form-control"
+                           placeholder="🔍 Search Student...">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Student Table -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0" id="studentTable">
+
+                    <thead class="table-dark">
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Batch</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Course</th>
+                        <th>Mode</th>
+                        <th>Fees</th>
+                        <th>Consultant</th>
+                        <th class="text-center">Action</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% for student in students %}
+
+                    <tr>
+
+                        <td>{{ student.id }}</td>
+
+                        <td class="fw-semibold">
+
+                            {{ student.student_name }}
+
+                        </td>
+
+                        <td>{{ student.batch_time }}</td>
+
+                        <td>{{ student.email }}</td>
+
+                        <td>{{ student.phone }}</td>
+
+                        <td>
+
+                            <span class="badge bg-primary">
+
+                                {{ student.course }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            {% if student.mode_of_class == "Online" %}
+
+                                <span class="badge bg-success">
+
+                                    Online
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-warning text-dark">
+
+                                    Offline
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-danger">
+
+                                ₹ {{ student.fees_pending }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-info text-dark">
+
+                                {{ student.allocated_consultant }}
+
+                            </span>
+
+                        </td>
+
+                        <td class="text-center">
+
+                            <a href="{% url 'edit_student' student.id %}"
+                               class="btn btn-warning btn-sm">
+
+                                <i class="bi bi-pencil-square"></i>
+
+                            </a>
+
+                            <a href="{% url 'delete_student' student.id %}"
+                               class="btn btn-danger btn-sm"
+
+                               onclick="return confirm('Delete this student?')">
+
+                                <i class="bi bi-trash-fill"></i>
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="10" class="text-center py-5">
+
+                            <i class="bi bi-database-x fs-1 text-secondary"></i>
+
+                            <h5 class="mt-3">
+
+                                No Students Found
+
+                            </h5>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+document.getElementById("searchInput").addEventListener("keyup", function(){
+
+let value=this.value.toLowerCase();
+
+let rows=document.querySelectorAll("#studentTable tbody tr");
+
+rows.forEach(function(row){
+
+row.style.display=row.innerText.toLowerCase().includes(value) ? "" : "none";
+
+});
+
+});
+
+</script>
+
+{% endblock %}

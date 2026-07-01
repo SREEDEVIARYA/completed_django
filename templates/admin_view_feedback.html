@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-primary">📌 Student Feedback Report</h3>
+
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-dark fw-bold">
+            ⬅ Back
+        </a>
+    </div>
+
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-header bg-dark text-white fw-bold">
+            All Feedback Submitted by Students
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Student ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>DOJ</th>
+                            <th>Program</th>
+                            <th>Consultant</th>
+
+                            <th>Overall</th>
+                            <th>Content</th>
+                            <th>Materials</th>
+                            <th>Trainer</th>
+                            <th>Delivery</th>
+
+                            <th>On Time</th>
+                            <th>Skill</th>
+                            <th>Confident</th>
+                            <th>Recording</th>
+
+                            <th>Tools</th>
+                            <th>Duration</th>
+                            <th>Pace</th>
+
+                            <th>Suggestion</th>
+                            <th>Future Topics</th>
+
+                            <th>Recommend</th>
+                            <th>Rating</th>
+                            <th>Submitted At</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for fb in feedbacks %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ fb.student.emp_id }}</td>
+                            <td>{{ fb.full_name }}</td>
+                            <td>{{ fb.email }}</td>
+                            <td>{{ fb.date_of_join }}</td>
+                            <td>{{ fb.program_name }}</td>
+                            <td>{{ fb.consultant_name }}</td>
+
+                            <td>{{ fb.overall_experience }}</td>
+                            <td>{{ fb.content_relevance }}</td>
+                            <td>{{ fb.quality_materials }}</td>
+                            <td>{{ fb.trainer_encouragement }}</td>
+                            <td>{{ fb.mode_of_delivery }}</td>
+
+                            <td>{{ fb.class_started_on_time }}</td>
+                            <td>{{ fb.skill_enhancement }}</td>
+                            <td>{{ fb.confident_apply_skills }}</td>
+                            <td>{{ fb.recording_uploaded }}</td>
+
+                            <td>{{ fb.tools_helpful }}</td>
+                            <td>{{ fb.duration_sufficient }}</td>
+                            <td>{{ fb.program_pace }}</td>
+
+                            <td>{{ fb.improvement_suggestion }}</td>
+                            <td>{{ fb.future_topics }}</td>
+
+                            <td>{{ fb.recommend_program }}</td>
+                            <td>{{ fb.program_rating }}</td>
+                            <td>{{ fb.submitted_at }}</td>
+                        </tr>
+
+                        {% empty %}
+                        <tr>
+                            <td colspan="24" class="text-center fw-bold text-danger">
+                                No Feedback Submitted Yet!
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
